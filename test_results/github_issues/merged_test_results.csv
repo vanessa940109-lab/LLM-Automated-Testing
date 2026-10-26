@@ -1,0 +1,4 @@
+﻿"issue_id","category","status","test_type","test_time","reason","source_report","evidence_dir"
+"GH-1046","snackbar","INCONCLUSIVE","Android UI / Appium","20261025_124251","完成頁面切換，但 XML 未捕捉到Task saved。Snackbar 可能短暫出現，不能判定 Bug 不存在。","[LOCAL_PATH]","[LOCAL_PATH]"
+"GH-1035","navigation","NOT_REPRODUCED","Android UI / Appium","20261021_200348","返回後側邊選單正常顯示，本回合未觀察到空白畫面。","[LOCAL_PATH]",""
+"GH-969","task_complete","SUSPECTED_UNCHECK_BUG","Android UI / Appium","20261021_200724","初始化階段發現疑似異常：Appium 點擊已完成任務後，Checkbox 仍維持 checked=True。尚未完成後續 Task Details 驗證。","[LOCAL_PATH]","[LOCAL_PATH]"

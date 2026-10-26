@@ -1,0 +1,46 @@
+{
+    "bug_id": "B17",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B17",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B17_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "edit-link",
+            "locator": "class"
+        },
+        {
+            "action": "input",
+            "target": "edit-title",
+            "locator": "id",
+            "value": "   "
+        },
+        {
+            "action": "click",
+            "target": "save-edit",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "After editing the task title to blank spaces, the title shoul\u001b[5D\u001b[K\nshould remain unchanged and the validation should prevent the input from be\u001b[2D\u001b[K\nbeing accepted."
+    },
+    "generation_method": "llm_with_rule_repair",
+    "repair_applied": true
+}

@@ -1,0 +1,30 @@
+{
+    "bug_id": "B19",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B19",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B19_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "click",
+            "target": "delete-button"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "Deleting the selected task 'B19_TEST' correctly removes the task with title 'B19_TEST'."
+    }
+}

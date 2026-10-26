@@ -1,0 +1,37 @@
+{
+    "bug_id": "B07",
+    "category": "todo_web",
+    "test_name": "B07_TEST",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B07_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox",
+            "locator": "class"
+        },
+        {
+            "action": "uncheck",
+            "target": "task-checkbox",
+            "locator": "class"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "After the task is unchecked, the task should still be marked \nas completed. This indicates that the task is not being reactivated."
+    }
+}

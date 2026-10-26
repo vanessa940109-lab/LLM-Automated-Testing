@@ -1,0 +1,27 @@
+{
+    "bug_id": "B01",
+    "category": "todo_web",
+    "test_name": "Test B01",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "   "
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "An error message should be displayed indicating that the task\ntask title cannot be empty, and the task should not be created in the appli\napplication's state."
+    }
+}

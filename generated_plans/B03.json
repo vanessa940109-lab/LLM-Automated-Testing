@@ -1,0 +1,32 @@
+{
+    "bug_id": "B03",
+    "category": "todo_web",
+    "test_name": "B03_TEST",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B03_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "delete-button",
+            "locator": "class"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "After clicking the delete-button, the task should no longer b\nbe visible in the Todo list."
+    }
+}

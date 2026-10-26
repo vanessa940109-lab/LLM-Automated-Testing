@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Todo Web</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .add-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        #title {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 9px 15px;
+            cursor: pointer;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .filters a {
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            color: black;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-title {
+            text-decoration: none;
+            color: black;
+            font-size: 17px;
+            white-space: pre-wrap;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        .clear-form {
+            margin-top: 25px;
+            text-align: right;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Todo List</h1>
+
+    <form
+        class="add-form"
+        action="/add"
+        method="POST"
+    >
+
+        <input
+            id="title"
+            name="title"
+            type="text"
+            placeholder="Enter task title"
+        >
+
+        <button
+            id="add-task"
+            type="submit"
+        >
+            Add Task
+        </button>
+
+    </form>
+
+
+    <div class="filters">
+
+        <a id="filter-all" href="/?filter=all">
+            All
+        </a>
+
+        <a id="filter-active" href="/?filter=active">
+            Active
+        </a>
+
+        <a id="filter-completed" href="/?filter=completed">
+            Completed
+        </a>
+
+    </div>
+
+
+    <div id="task-list">
+
+        {% if tasks %}
+
+            {% for task in tasks %}
+
+                <div
+                    class="task"
+                    data-task-id="{{ task.id }}"
+                >
+
+                    <div class="task-left">
+
+                        <form
+                            action="/toggle/{{ task.id }}"
+                            method="POST"
+                        >
+
+                            <input
+                                class="task-checkbox"
+                                type="checkbox"
+                                onchange="this.form.submit()"
+                                {% if task.completed %}
+                                    checked
+                                {% endif %}
+                            >
+
+                        </form>
+
+                        <!--
+                            B14 修正：
+                            將任務名稱直接放在 a 標籤內，
+                            避免 HTML 換行與縮排影響 textContent。
+                        -->
+                        <a
+                            class="task-title {% if task.completed %}completed{% endif %}"
+                            href="/task/{{ task.id }}"
+                        >{{ task.title }}</a>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <a
+                            class="edit-link"
+                            href="/edit/{{ task.id }}"
+                        >
+                            Edit
+                        </a>
+
+                        <form
+                            action="/delete/{{ task.id }}"
+                            method="POST"
+                        >
+
+                            <button
+                                class="delete-button"
+                                type="submit"
+                            >
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p
+                id="empty-message"
+                class="empty"
+            >
+                No tasks found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <form
+        class="clear-form"
+        action="/clear-completed"
+        method="POST"
+    >
+
+        <button
+            id="clear-completed"
+            type="submit"
+        >
+            Clear Completed
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

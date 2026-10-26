@@ -1,0 +1,43 @@
+{
+    "bug_id": "B18",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B18",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B18_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox"
+        },
+        {
+            "action": "click",
+            "target": "edit-link"
+        },
+        {
+            "action": "input",
+            "target": "edit-title",
+            "value": "B18_EDITED"
+        },
+        {
+            "action": "click",
+            "target": "save-edit"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task should be edited to 'B18_EDITED' and its status should remain completed."
+    }
+}

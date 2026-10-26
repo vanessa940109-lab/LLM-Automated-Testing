@@ -1,0 +1,26 @@
+{
+    "bug_id": "B12",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B12",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B12_TEST_@#$%"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task with title 'B12_TEST_@#$%' should be added to the list without any special characters being removed."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "bug_id": "B24",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B24",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B24_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "click",
+            "target": "filter-completed"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The filter-completed should display only completed tasks, and the active tasks should not be displayed."
+    }
+}

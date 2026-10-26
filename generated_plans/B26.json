@@ -1,0 +1,34 @@
+{
+    "bug_id": "B26",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B26",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B26_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "click",
+            "target": "filter-active"
+        },
+        {
+            "action": "click",
+            "target": "filter-all"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task should be added to the active filter and then to the all filter without any changes to its status."
+    }
+}

@@ -1,0 +1,792 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LLM 自動化測試控制台</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft JhengHei", sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 35px 15px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* 統計卡片 */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            padding: 20px 12px;
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* 表單 */
+
+        .section-title {
+            margin-top: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .batch-options {
+            padding: 18px;
+            margin-top: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 按鈕 */
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+        }
+
+        /* 結果 */
+
+        .message {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 11px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-value {
+            font-weight: bold;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .status-pass {
+            color: #15803d;
+        }
+
+        .status-bug {
+            color: #b45309;
+        }
+
+        .status-error {
+            color: #dc2626;
+        }
+
+        .note {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .info {
+            padding: 12px 15px;
+            margin-top: 15px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .result-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .result-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ==========================================
+         1. 網頁標題
+    ========================================== -->
+
+    <h1>LLM Automated Testing System</h1>
+
+    <p class="subtitle">
+        GitHub Issues × Ollama × Selenium
+    </p>
+
+
+    <!-- ==========================================
+         2. 專案統計
+    ========================================== -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ total_bug_cases | default(0) }}
+            </div>
+
+            <div class="stat-label">
+                本地 Bug 案例
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ generated_plan_count | default(0) }}
+            </div>
+
+            <div class="stat-label">
+                已產生 Test Plan
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ batch_supported_count | default(30) }}
+            </div>
+
+            <div class="stat-label">
+                批次設定案例
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         3. 測試設定表單
+    ========================================== -->
+
+    <form method="POST" id="test-form">
+
+        <h3 class="section-title">
+            基本測試設定
+        </h3>
+
+
+        <!-- 測試來源 -->
+
+        <label for="source">
+            測試來源
+        </label>
+
+        <select id="source" name="source">
+
+            <option value="local"
+                {% if source == "local" %}selected{% endif %}>
+                本地 Bug Cases（B01～B30）
+            </option>
+
+            <option value="github"
+                {% if source == "github" %}selected{% endif %}>
+                GitHub Issues（尚未串接）
+            </option>
+
+        </select>
+
+
+        <!-- LLM 模型 -->
+
+        <label for="model">
+            LLM 模型
+        </label>
+
+        <select id="model" name="model">
+
+            <option value="3b"
+                {% if model == "3b" %}selected{% endif %}>
+                qwen2.5:3b
+            </option>
+
+            <option value="7b"
+                {% if model == "7b" %}selected{% endif %}>
+                qwen2.5:7b（尚未串接）
+            </option>
+
+        </select>
+
+
+        <!-- 測試模式 -->
+
+        <label for="mode">
+            測試模式
+        </label>
+
+        <select id="mode" name="mode">
+
+            <option value="normal"
+                {% if mode == "normal" %}selected{% endif %}>
+                NORMAL MODE
+            </option>
+
+            <option value="bug"
+                {% if mode == "bug" %}selected{% endif %}>
+                BUG MODE
+            </option>
+
+        </select>
+
+
+        <h3 class="section-title">
+            測試執行設定
+        </h3>
+
+
+        <!-- 執行方式 -->
+
+        <label for="test_type">
+            執行方式
+        </label>
+
+        <select
+            id="test_type"
+            name="test_type"
+            onchange="toggleTestOptions()"
+        >
+
+            <option value="single"
+                {% if test_type == "single" %}selected{% endif %}>
+                單次測試
+            </option>
+
+            <option value="batch"
+                {% if test_type == "batch" %}selected{% endif %}>
+                批次測試
+            </option>
+
+        </select>
+
+
+        <!-- ==========================================
+             4. 單次測試設定
+        ========================================== -->
+
+        <div id="single-options">
+
+            <label for="bug_id">
+                測試案例
+            </label>
+
+            <select id="bug_id" name="bug_id">
+
+                <optgroup label="本地 Bug Cases">
+
+                    {% for bug in local_bugs %}
+
+                    <option value="{{ bug.id }}"
+                        {% if bug_id == bug.id %}selected{% endif %}>
+                        {{ bug.id }} - {{ bug.title }}
+                    </option>
+
+                    {% endfor %}
+
+                </optgroup>
+
+                {% if issues %}
+
+                <optgroup label="GitHub Issues">
+
+                    {% for issue in issues %}
+
+                    <option value="{{ issue.id }}"
+                        {% if bug_id == issue.id %}selected{% endif %}>
+                        {{ issue.id }} - {{ issue.title[:55] }}
+                    </option>
+
+                    {% endfor %}
+
+                </optgroup>
+
+                {% endif %}
+
+            </select>
+
+            <div class="info">
+                單次測試可選擇 B01～B30。
+                執行前必須先產生對應的 JSON Test Plan。
+                新增案例仍需完成 Selenium 整合驗證。
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             5. 批次測試設定
+        ========================================== -->
+
+        <div
+            id="batch-options"
+            class="batch-options hidden"
+        >
+
+            <label for="batch_range">
+                測試範圍
+            </label>
+
+            <select
+                id="batch_range"
+                name="batch_range"
+            >
+
+                <option value="all"
+                    {% if batch_range == "all" %}selected{% endif %}>
+                    B01～B30（全部案例）
+                </option>
+
+            </select>
+
+
+            <label for="repeat_count">
+                每個案例重複次數
+            </label>
+
+            <select
+                id="repeat_count"
+                name="repeat_count"
+            >
+
+                {% for count in [1, 3, 5, 10] %}
+
+                <option value="{{ count }}"
+                    {% if repeat_count == count %}selected{% endif %}>
+                    {{ count }} 次
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <p class="note">
+                目前批次測試已設定支援 B01～B30。
+                每個案例可重複執行 1、3、5 或 10 次。
+                系統會依序呼叫 Selenium Runner，
+                儲存單次 CSV，並產生批次彙整報表。
+            </p>
+
+            <div class="info">
+                執行完整批次前，必須先產生
+                B01～B30 全部 JSON Test Plan。
+                B14、B27、B28 等案例仍有待修正的測試邏輯。
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             6. 執行按鈕
+        ========================================== -->
+
+        <button
+            type="submit"
+            id="submit-button"
+        >
+            開始單次測試
+        </button>
+
+    </form>
+
+
+    <!-- ==========================================
+         7. 測試結果訊息
+    ========================================== -->
+
+    {% if message %}
+
+    <div class="message {{ status }}">
+        {{ message }}
+    </div>
+
+    {% endif %}
+
+
+    <!-- ==========================================
+         8. 詳細測試結果
+    ========================================== -->
+
+    {% if test_result %}
+
+    <div class="result-box">
+
+        <h3>測試執行結果</h3>
+
+        {% if test_type == "single" %}
+
+        <div class="result-row">
+            <span>測試案例</span>
+            <span class="result-value">
+                {{ test_result.bug_id }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試模式</span>
+            <span class="result-value">
+                {{ test_result.mode | default(mode) | upper }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試結果</span>
+
+            <span class="result-value
+                {% if test_result.test_result == 'PASS' %}
+                    status-pass
+                {% elif test_result.test_result == 'BUG_REPRODUCED' %}
+                    status-bug
+                {% else %}
+                    status-error
+                {% endif %}
+            ">
+                {{ test_result.test_result }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>執行時間</span>
+            <span class="result-value">
+                {{ test_result.duration_seconds }} 秒
+            </span>
+        </div>
+
+        {% if test_result.run_id is defined %}
+
+        <div class="result-row">
+            <span>Run ID</span>
+            <span class="result-value">
+                {{ test_result.run_id }}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.plan_valid is defined %}
+
+        <div class="result-row">
+            <span>Test Plan 驗證</span>
+            <span class="result-value">
+                {{ "VALID" if test_result.plan_valid else "INVALID" }}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.error_message %}
+
+        <div class="result-row">
+            <span>錯誤訊息</span>
+            <span class="result-value status-error">
+                {{ test_result.error_message }}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% elif test_type == "batch" %}
+
+        <div class="result-row">
+            <span>批次編號</span>
+            <span class="result-value">
+                {{ test_result.batch_id }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試模式</span>
+            <span class="result-value">
+                {{ test_result.mode | default(mode) | upper }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>總測試次數</span>
+            <span class="result-value">
+                {{ test_result.total_tests }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>PASS</span>
+            <span class="result-value status-pass">
+                {{ test_result.pass_count }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>BUG_REPRODUCED</span>
+            <span class="result-value status-bug">
+                {{ test_result.bug_reproduced_count }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>FAILED / ERROR</span>
+            <span class="result-value status-error">
+                {{ test_result.failed_count }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>符合預期次數</span>
+            <span class="result-value">
+                {{ test_result.expected_count }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>符合預期比例</span>
+            <span class="result-value">
+                {{ test_result.expected_rate }}%
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>平均執行時間</span>
+            <span class="result-value">
+                {{ test_result.average_duration }} 秒
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.result_file is defined %}
+
+        <div class="result-row">
+            <span>CSV 檔案</span>
+            <span class="result-value">
+                {{ test_result.result_file }}
+            </span>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ==========================================
+         9. 底部說明
+    ========================================== -->
+
+    <p class="note">
+        本系統目前定義 B01～B30 共 30 個本地 Bug 案例，
+        並已設定單次與批次 Selenium 測試流程。
+        測試計畫由 Ollama LLM 產生，
+        執行結果由 Selenium 評估並記錄至 CSV。
+        新增案例仍需完成整合驗證。
+        GitHub Issues 自動執行與 qwen2.5:7b
+        尚未完成串接。
+    </p>
+
+</div>
+
+
+<!-- ==============================================
+     10. JavaScript：切換單次 / 批次測試
+============================================== -->
+
+<script>
+
+    function toggleTestOptions() {
+
+        const testType =
+            document.getElementById("test_type").value;
+
+        const singleOptions =
+            document.getElementById("single-options");
+
+        const batchOptions =
+            document.getElementById("batch-options");
+
+        const submitButton =
+            document.getElementById("submit-button");
+
+        if (testType === "batch") {
+
+            singleOptions.classList.add("hidden");
+            batchOptions.classList.remove("hidden");
+
+            submitButton.textContent =
+                "開始批次測試";
+
+        } else {
+
+            singleOptions.classList.remove("hidden");
+            batchOptions.classList.add("hidden");
+
+            submitButton.textContent =
+                "開始單次測試";
+        }
+    }
+
+
+    // 防止重複送出
+    document.getElementById("test-form")
+        .addEventListener("submit", function() {
+
+            const submitButton =
+                document.getElementById("submit-button");
+
+            const testType =
+                document.getElementById("test_type").value;
+
+            submitButton.disabled = true;
+
+            if (testType === "batch") {
+
+                submitButton.textContent =
+                    "批次測試執行中，請稍候...";
+
+            } else {
+
+                submitButton.textContent =
+                    "單次測試執行中，請稍候...";
+            }
+        });
+
+
+    // 頁面載入時更新選項
+    toggleTestOptions();
+
+</script>
+
+</body>
+</html>

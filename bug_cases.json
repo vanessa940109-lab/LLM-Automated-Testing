@@ -1,0 +1,306 @@
+
+[
+  {
+    "id": "B01",
+    "title": "Empty task title can be created",
+    "description": "When the user enters only blank spaces as the task title and clicks Add Task, the application incorrectly creates an empty task. The expected behavior is to reject an empty title."
+  },
+  {
+    "id": "B02",
+    "title": "Edited task title is not saved",
+    "description": "After editing an existing task and clicking Save, the application still displays the old title. The expected behavior is for the new title to persist."
+  },
+  {
+    "id": "B03",
+    "title": "Deleted task remains in the task list",
+    "description": "When the user clicks Delete on a task, the task remains visible in the Todo list. The expected behavior is for the deleted task to disappear."
+  },
+  {
+    "id": "B04",
+    "title": "Task cannot be marked as completed",
+    "description": "When the user checks the checkbox of an active task, the task remains active. The expected behavior is for the task to become completed."
+  },
+  {
+    "id": "B05",
+    "title": "Active filter does not show active task",
+    "description": "An active task disappears after the user selects the Active filter. The expected behavior is for active tasks to remain visible."
+  },
+  {
+    "id": "B06",
+    "title": "Completed filter does not show completed task",
+    "description": "After a task is marked completed, it disappears when the user selects the Completed filter. The expected behavior is for completed tasks to be displayed."
+  },
+  {
+    "id": "B07",
+    "title": "Completed task cannot be reactivated",
+    "description": "When the user unchecks a completed task, the task remains completed. The expected behavior is for the task to return to the active state."
+  },
+  {
+    "id": "B08",
+    "title": "Clear Completed does not remove completed task",
+    "description": "After clicking Clear Completed, a completed task remains in the Todo list. The expected behavior is for all completed tasks to be removed."
+  },
+  {
+    "id": "B09",
+    "title": "Task detail page displays incorrect task",
+    "description": "When the user opens a task, the task detail page displays information belonging to a different task. The expected behavior is to display the selected task."
+  },
+  {
+    "id": "B10",
+    "title": "Adding a specific task causes server error",
+    "description": "When the user submits a specific task title, the application encounters a server error instead of creating the task normally."
+  },
+  {
+    "id": "B11",
+    "title": "Adding a task creates duplicate tasks",
+    "description": "Adding a task with a title starting with B11_ creates two identical tasks instead of one.",
+    "test_title": "B11_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"}
+    ]
+  },
+  {
+    "id": "B12",
+    "title": "Special characters are lost when adding a task",
+    "description": "Adding a task containing special characters incorrectly removes some characters from the saved title.",
+    "test_title": "B12_TEST_@#$%",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"}
+    ]
+  },
+  {
+    "id": "B13",
+    "title": "Long task title is incorrectly truncated",
+    "description": "Adding a long task title causes the application to truncate its content unexpectedly.",
+    "test_title": "B13_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"}
+    ]
+  },
+  {
+    "id": "B14",
+    "title": "Task title whitespace is handled incorrectly",
+    "description": "Leading and trailing whitespace is not normalized correctly when adding a task.",
+    "test_title": "  B14_TEST  ",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"}
+    ]
+  },
+  {
+    "id": "B15",
+    "title": "Editing a task creates a duplicate",
+    "description": "Saving an edited task incorrectly creates an additional task instead of updating the original.",
+    "test_title": "B15_TEST",
+    "input_values": {"edit-title": "B15_EDITED"},
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "edit-link"},
+      {"action": "input", "target": "edit-title"},
+      {"action": "click", "target": "save-edit"}
+    ]
+  },
+  {
+    "id": "B16",
+    "title": "Special characters disappear after editing",
+    "description": "Saving an edited title containing special characters incorrectly removes those characters.",
+    "test_title": "B16_TEST",
+    "input_values": {"edit-title": "B16_EDITED_@#$%"},
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "edit-link"},
+      {"action": "input", "target": "edit-title"},
+      {"action": "click", "target": "save-edit"}
+    ]
+  },
+  {
+    "id": "B17",
+    "title": "Blank edited title is incorrectly accepted",
+    "description": "Editing a task title to blank spaces incorrectly clears its title instead of rejecting the invalid input.",
+    "test_title": "B17_TEST",
+    "input_values": {"edit-title": "   "},
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "edit-link"},
+      {"action": "input", "target": "edit-title"},
+      {"action": "click", "target": "save-edit"}
+    ]
+  },
+  {
+    "id": "B18",
+    "title": "Editing a completed task resets its status",
+    "description": "Editing a completed task unexpectedly changes its status back to active.",
+    "test_title": "B18_TEST",
+    "input_values": {"edit-title": "B18_EDITED"},
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"},
+      {"action": "click", "target": "edit-link"},
+      {"action": "input", "target": "edit-title"},
+      {"action": "click", "target": "save-edit"}
+    ]
+  },
+  {
+    "id": "B19",
+    "title": "Deleting a task removes the wrong task",
+    "description": "Deleting the selected task incorrectly removes another task.",
+    "test_title": "B19_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "delete-button"}
+    ]
+  },
+  {
+    "id": "B20",
+    "title": "Completed task cannot be deleted",
+    "description": "Deleting a completed task fails and the task remains visible.",
+    "test_title": "B20_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"},
+      {"action": "click", "target": "delete-button"}
+    ]
+  },
+  {
+    "id": "B21",
+    "title": "Completing one task changes another task",
+    "description": "Marking a task as completed incorrectly changes the completion state of another task.",
+    "test_title": "B21_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"}
+    ]
+  },
+  {
+    "id": "B22",
+    "title": "Reactivating a task modifies its title",
+    "description": "Unchecking a completed task incorrectly changes its title.",
+    "test_title": "B22_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"},
+      {"action": "uncheck", "target": "task-checkbox"}
+    ]
+  },
+  {
+    "id": "B23",
+    "title": "Active filter displays completed tasks",
+    "description": "The Active filter incorrectly includes completed tasks.",
+    "test_title": "B23_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"},
+      {"action": "click", "target": "filter-active"}
+    ]
+  },
+  {
+    "id": "B24",
+    "title": "Completed filter displays active tasks",
+    "description": "The Completed filter incorrectly includes tasks that are still active.",
+    "test_title": "B24_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "filter-completed"}
+    ]
+  },
+  {
+    "id": "B25",
+    "title": "All filter omits existing tasks",
+    "description": "The All filter incorrectly hides a task that exists in the application.",
+    "test_title": "B25_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "filter-all"}
+    ]
+  },
+  {
+    "id": "B26",
+    "title": "Switching filters changes task status",
+    "description": "Switching between task filters unexpectedly modifies the task completion status.",
+    "test_title": "B26_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "filter-active"},
+      {"action": "click", "target": "filter-all"}
+    ]
+  },
+  {
+    "id": "B27",
+    "title": "Task disappears after page refresh",
+    "description": "An existing task unexpectedly disappears after refreshing the page.",
+    "test_title": "B27_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "open", "target": "/"}
+    ]
+  },
+  {
+    "id": "B28",
+    "title": "Task detail shows incorrect completion status",
+    "description": "The task detail page displays an incorrect completion state for the selected task.",
+    "test_title": "B28_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "check", "target": "task-checkbox"},
+      {"action": "click", "target": "task-title"}
+    ]
+  },
+  {
+    "id": "B29",
+    "title": "Clear Completed removes active tasks",
+    "description": "Clicking Clear Completed incorrectly deletes an active task.",
+    "test_title": "B29_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"},
+      {"action": "click", "target": "clear-completed"}
+    ]
+  },
+  {
+    "id": "B30",
+    "title": "New task displays an incorrect title",
+    "description": "After creating a task, the application displays a title different from the submitted value.",
+    "test_title": "B30_TEST",
+    "required_flow": [
+      {"action": "open", "target": "/"},
+      {"action": "input", "target": "title"},
+      {"action": "click", "target": "add-task"}
+    ]
+  }
+]

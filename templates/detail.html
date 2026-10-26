@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Task Detail</title>
+</head>
+
+<body>
+
+    <h1>Task Detail</h1>
+
+    <div id="task-detail">
+
+        <h2 id="task-title">
+            {{ task.title }}
+        </h2>
+
+        <p id="task-status">
+            Status:
+            {% if task.completed %}
+                Completed
+            {% else %}
+                Active
+            {% endif %}
+        </p>
+
+        <a
+            id="edit-task"
+            href="/edit/{{ task.id }}"
+        >
+            Edit Task
+        </a>
+
+        <br><br>
+
+        <a
+            id="back-home"
+            href="/"
+        >
+            Back to Todo List
+        </a>
+
+    </div>
+
+</body>
+
+</html>

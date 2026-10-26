@@ -1,0 +1,5 @@
+﻿"issue_id","category","status","test_type","test_time","reason","source_report","evidence_dir"
+"GH-1046","snackbar","BUG_REPRODUCED","Android UI / Appium","20261021_145450","在未執行新增或編輯任務操作的頁面切換過程中，Appium 偵測到 Task saved 文字。","[LOCAL_PATH]","[LOCAL_PATH]"
+"GH-1035","navigation","NOT_REPRODUCED","Android UI / Appium","20261021_150135","返回後側邊選單正常顯示，本回合未觀察到空白畫面。","[LOCAL_PATH]",""
+"GH-969","task_complete","SUSPECTED_BUG","Android UI / Appium","20261021_152429","取消完成後 Checkbox 仍為 checked=True，需確認操作是否成功觸發及資料狀態。","[LOCAL_PATH]","[LOCAL_PATH]"
+"GH-TEST-001","snackbar","BUG_REPRODUCED","Android UI / Appium","20261021_160000","自動更新測試資料","test.csv",""

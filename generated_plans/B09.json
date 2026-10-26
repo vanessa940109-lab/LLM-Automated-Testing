@@ -1,0 +1,32 @@
+{
+    "bug_id": "B09",
+    "category": "todo_web",
+    "test_name": "Test B09",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B09_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "task-title",
+            "locator": "class"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task detail page displays the correct task."
+    }
+}

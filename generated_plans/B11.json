@@ -1,0 +1,26 @@
+{
+    "bug_id": "B11",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B11",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B11_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "A task with title 'B11_TEST' should be added to the list without duplicates."
+    }
+}

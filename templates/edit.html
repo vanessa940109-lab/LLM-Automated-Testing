@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+</head>
+
+<body>
+
+    <h1>Edit Task</h1>
+
+    <form
+        id="edit-form"
+        action="/edit/{{ task.id }}"
+        method="POST"
+    >
+
+        <input
+            id="edit-title"
+            name="title"
+            type="text"
+            value="{{ task.title }}"
+        >
+
+        <button
+            id="save-edit"
+            type="submit"
+        >
+            Save
+        </button>
+
+    </form>
+
+    <br>
+
+    <a
+        id="cancel-edit"
+        href="/task/{{ task.id }}"
+    >
+        Cancel
+    </a>
+
+</body>
+
+</html>

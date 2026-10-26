@@ -1,0 +1,30 @@
+{
+    "bug_id": "B25",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B25",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B25_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "click",
+            "target": "filter-all"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "All tasks should be visible after clicking the All filter."
+    }
+}

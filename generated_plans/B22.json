@@ -1,0 +1,34 @@
+{
+    "bug_id": "B22",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B22",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B22_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox"
+        },
+        {
+            "action": "uncheck",
+            "target": "task-checkbox"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task should be reactivated with the original title 'B22_TEST' and remain unchecked."
+    }
+}

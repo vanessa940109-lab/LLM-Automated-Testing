@@ -1,0 +1,26 @@
+{
+    "bug_id": "B13",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B13",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B13_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task with the title 'B13_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ_ABCDEFGHIJKLMNOPQRSTUVWXYZ' is added to the list without truncation."
+    }
+}

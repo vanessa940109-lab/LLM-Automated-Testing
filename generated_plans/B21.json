@@ -1,0 +1,30 @@
+{
+    "bug_id": "B21",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B21",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B21_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task titled 'B21_TEST' should be added to the list and marked as completed."
+    }
+}

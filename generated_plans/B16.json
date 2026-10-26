@@ -1,0 +1,46 @@
+{
+    "bug_id": "B16",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B16",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B16_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "edit-link",
+            "locator": "class"
+        },
+        {
+            "action": "input",
+            "target": "edit-title",
+            "locator": "id",
+            "value": "B16_EDITED_@#$%"
+        },
+        {
+            "action": "click",
+            "target": "save-edit",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The title should be saved with special characters intact and \u001b[K\nshould reflect the correct edited title 'B16_EDITED_@#$%' in the task list.\u001b[5D\u001b[K\nlist."
+    },
+    "generation_method": "llm_with_rule_repair",
+    "repair_applied": true
+}

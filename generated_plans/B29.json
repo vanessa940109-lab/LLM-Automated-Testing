@@ -1,0 +1,30 @@
+{
+    "bug_id": "B29",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B29",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B29_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "click",
+            "target": "clear-completed"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The active task should be removed and the clear-completed button should be disabled."
+    }
+}

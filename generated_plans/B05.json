@@ -1,0 +1,32 @@
+{
+    "bug_id": "B05",
+    "category": "todo_web",
+    "test_name": "B05_TEST",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B05_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "filter-active",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task titled 'B05_TEST' should be visible in the Active fi\nfilter."
+    }
+}

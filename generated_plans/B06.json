@@ -1,0 +1,37 @@
+{
+    "bug_id": "B06",
+    "category": "todo_web",
+    "test_name": "B06_TEST",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B06_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox",
+            "locator": "class"
+        },
+        {
+            "action": "click",
+            "target": "filter-completed",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task marked as completed should be displayed in the filte\nfilter-completed section."
+    }
+}

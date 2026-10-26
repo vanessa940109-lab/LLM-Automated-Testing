@@ -1,0 +1,43 @@
+{
+    "bug_id": "B02",
+    "category": "todo_web",
+    "test_name": "Test B02",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B02_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "click",
+            "target": "edit-link",
+            "locator": "class"
+        },
+        {
+            "action": "input",
+            "target": "edit-title",
+            "locator": "id",
+            "value": "B02_EDITED"
+        },
+        {
+            "action": "click",
+            "target": "save-edit",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task with title 'B02_EDITED' is displayed and the task ti\ntitle should be saved correctly."
+    }
+}

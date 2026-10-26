@@ -1,0 +1,34 @@
+{
+    "bug_id": "B23",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B23",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B23_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox"
+        },
+        {
+            "action": "click",
+            "target": "filter-active"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task should be displayed under the 'Active' filter after adding and checking it."
+    }
+}

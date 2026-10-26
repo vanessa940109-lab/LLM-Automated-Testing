@@ -1,0 +1,8 @@
+﻿"bug_id","platform","status","reason","run_id","evidence_dir"
+"B01","Android","INCONCLUSIVE","未在 XML 中捕捉到錯誤提示，需要檢查畫面或截圖。","20261021_203709","[LOCAL_PATH]"
+"B01","Android","INCONCLUSIVE","未在 XML 中捕捉到錯誤提示，需要檢查畫面或截圖。","20261021_204257","[LOCAL_PATH]"
+"B01","Android","PASS","空白 Title 儲存後，成功偵測到錯誤提示。","20261021_204540","[LOCAL_PATH]"
+"B01","Android","ERROR","找不到新增任務按鈕，請提供 Task List 畫面的 XML。","20261021_214355","[LOCAL_PATH]"
+"B01","Android","ERROR","找不到新增任務按鈕，請提供 Task List 畫面的 XML。","20261021_214503","[LOCAL_PATH]"
+"B01","Empty task title validation","Android","Appium","PASS","空白 Title 儲存後，成功偵測到錯誤提示。"
+"B01","Empty task title validation","Android","Appium","PASS","空白 Title 儲存後，成功偵測到錯誤提示。"

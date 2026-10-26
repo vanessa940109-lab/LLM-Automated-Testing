@@ -1,0 +1,26 @@
+{
+    "bug_id": "B30",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B30",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "value": "B30_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task with title 'B30_TEST' is successfully added to the list and displayed correctly."
+    }
+}

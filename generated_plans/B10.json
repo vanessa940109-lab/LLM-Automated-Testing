@@ -1,0 +1,27 @@
+{
+    "bug_id": "B10",
+    "category": "todo_web",
+    "test_name": "Test B10",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B10_CRASH_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "A new task with the title 'B10_CRASH_TEST' is created and add\nadded to the list."
+    }
+}

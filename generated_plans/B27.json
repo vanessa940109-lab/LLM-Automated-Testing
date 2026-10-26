@@ -1,0 +1,34 @@
+{
+    "bug_id": "B27",
+    "category": "todo_web",
+    "model": "qwen2.5:3b",
+    "test_name": "Test B27",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B27_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "open",
+            "target": "/"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "The task 'B27_TEST' should be added to the list and not disap\u001b[5D\u001b[K\ndisappear after refreshing the page."
+    },
+    "generation_method": "llm_with_rule_repair",
+    "repair_applied": true
+}

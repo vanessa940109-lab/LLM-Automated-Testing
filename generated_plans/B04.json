@@ -1,0 +1,32 @@
+{
+    "bug_id": "B04",
+    "category": "todo_web",
+    "test_name": "Test B04",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B04_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox",
+            "locator": "class"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "Mark the task as completed and ensure the task status is corr\ncorrectly updated to 'completed'."
+    }
+}

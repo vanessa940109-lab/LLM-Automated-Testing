@@ -1,0 +1,1230 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="10">
+
+    <title>LLM 自動化測試控制台</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft JhengHei", sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 35px 15px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .github-stats {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .stat-card {
+            padding: 20px 12px;
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .appium-button {
+            background: #059669;
+        }
+
+        .appium-button:hover {
+            background: #047857;
+        }
+
+        .appium-button:disabled {
+            background: #94a3b8;
+        }
+
+        .appium-panel {
+            padding: 24px;
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            background: #f8fffc;
+            margin-top: 20px;
+        }
+
+        .running-box {
+            padding: 15px;
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 8px;
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+
+        .ready-box {
+            padding: 15px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .message {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 11px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-value {
+            font-weight: bold;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .status-pass {
+            color: #15803d;
+        }
+
+        .status-bug {
+            color: #b45309;
+        }
+
+        .status-error {
+            color: #dc2626;
+        }
+
+        .note {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .info {
+            padding: 12px 15px;
+            margin-top: 15px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .batch-options {
+            padding: 18px;
+            margin-top: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 750px;
+        }
+
+        .data-table th {
+            padding: 12px;
+            text-align: left;
+            background: #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            overflow-wrap: anywhere;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .reason-cell {
+            max-width: 350px;
+            min-width: 220px;
+            line-height: 1.6;
+        }
+
+        .status-label {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-label.reproduced {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-label.not-reproduced {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-label.suspected {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-label.other {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .github-link {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .github-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            padding: 20px;
+            text-align: center;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            color: #64748b;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+
+            .stats,
+            .github-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .result-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .result-value {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .stats,
+            .github-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ============================================= -->
+    <!-- 1. 標題 -->
+    <!-- ============================================= -->
+
+    <h1>LLM Automated Testing System</h1>
+
+    <p class="subtitle">
+        GitHub Issues × Ollama × Selenium × Appium
+    </p>
+
+
+    <!-- ============================================= -->
+    <!-- 2. 本地 Selenium 統計 -->
+    <!-- ============================================= -->
+
+    <h3 class="section-title">
+        本地 Selenium 測試總覽
+    </h3>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ total_bug_cases | default(0) }}
+            </div>
+            <div class="stat-label">
+                本地 Bug 案例
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ generated_plan_count | default(0) }}
+            </div>
+            <div class="stat-label">
+                已產生 Test Plan
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ batch_supported_count | default(30) }}
+            </div>
+            <div class="stat-label">
+                批次設定案例
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- 3. GitHub / Appium 統計 -->
+    <!-- ============================================= -->
+
+    <h3 class="section-title">
+        GitHub Issues / Appium 測試總覽
+    </h3>
+
+    <p class="section-description">
+        以下統計來自 merged_test_results.csv。
+        網頁每 10 秒自動重新整理測試結果。
+    </p>
+
+    <div class="stats github-stats">
+
+        <div class="stat-card">
+            <div class="stat-number">
+                {{ github_test_stats.total | default(0) }}
+            </div>
+            <div class="stat-label">
+                已測試 Issue
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number"
+                 style="color:#15803d;">
+                {{ github_test_stats.reproduced | default(0) }}
+            </div>
+            <div class="stat-label">
+                成功重現 Bug
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number"
+                 style="color:#2563eb;">
+                {{ github_test_stats.not_reproduced | default(0) }}
+            </div>
+            <div class="stat-label">
+                未重現
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number"
+                 style="color:#b45309;">
+                {{ github_test_stats.suspected | default(0) }}
+            </div>
+            <div class="stat-label">
+                疑似 Bug
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- 4. 新增：Appium 一鍵執行 -->
+    <!-- ============================================= -->
+
+    <h3 class="section-title">
+        Appium Android 自動化測試
+    </h3>
+
+    <p class="section-description">
+        選擇 GitHub Issue 後，
+        可以直接從 Dashboard 啟動 Android 自動化測試。
+        測試結果會由 Python 程式寫入 CSV，
+        再更新 Dashboard 統計。
+    </p>
+
+    <div class="appium-panel">
+
+        <h3>執行 GitHub Issue 測試</h3>
+
+        {% if appium_running %}
+
+        <div class="running-box">
+            <strong>目前正在執行 Appium 測試</strong>
+            <p>
+                測試 Issue：
+                {{ appium_running_issue }}
+            </p>
+            <p>
+                請等待測試完成。
+                為避免操作衝突，暫時無法啟動另一個測試。
+            </p>
+        </div>
+
+        {% else %}
+
+        <div class="ready-box">
+            Appium 測試目前沒有執行中的工作，
+            可以選擇 Issue 開始測試。
+        </div>
+
+        {% endif %}
+
+        <form
+            action="{{ url_for('run_appium_test') }}"
+            method="POST"
+            id="appium-form"
+        >
+
+            <label for="appium_issue_id">
+                選擇 GitHub Issue
+            </label>
+
+            <select
+                id="appium_issue_id"
+                name="issue_id"
+                required
+            >
+
+                <option value="GH-1046">
+                    GH-1046 - Snackbar 測試
+                </option>
+
+                <option value="GH-1035">
+                    GH-1035 - Navigation 測試
+                </option>
+
+                <option value="GH-969">
+                    GH-969 - Checkbox / UI State 測試
+                </option>
+
+                <option value="B01">
+                    B01 - Android 空白任務測試
+                </option>
+
+            </select>
+
+            <button
+                type="submit"
+                class="appium-button"
+                id="appium-submit"
+                {% if appium_running %}disabled{% endif %}
+            >
+
+                {% if appium_running %}
+                    Appium 測試執行中...
+                {% else %}
+                    開始執行 Appium 測試
+                {% endif %}
+
+            </button>
+
+        </form>
+
+        <p class="note">
+            執行前請確認 Android 模擬器已啟動、
+            Appium Server 正在運作，
+            且 Todo App 已安裝。
+            目前支援三個已建立的測試案例。
+        </p>
+
+        <div class="info">
+            注意：按下按鈕代表開始執行測試，
+            不代表測試已成功。
+            實際結果請查看下方 GitHub Issue 測試紀錄。
+        </div>
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- 5. GitHub / Appium 測試紀錄 -->
+    <!-- ============================================= -->
+
+    <div class="result-box">
+
+        <h3>GitHub Issue 測試紀錄</h3>
+
+        {% if github_test_results %}
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Issue ID</th>
+                        <th>Bug 類型</th>
+                        <th>測試結果</th>
+                        <th>測試時間</th>
+                        <th>測試說明</th>
+                        <th>GitHub</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for item in github_test_results %}
+
+                    {% set issue_number =
+                        item.issue_id
+                        | replace("GH-", "")
+                        | replace("GH", "")
+                        | replace("-", "")
+                    %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ item.issue_id }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ item.category | default("—", true) }}
+                        </td>
+
+                        <td>
+
+                            {% if item.status == "BUG_REPRODUCED" %}
+
+                                <span class="status-label reproduced">
+                                    {{ item.status }}
+                                </span>
+
+                            {% elif item.status == "NOT_REPRODUCED" %}
+
+                                <span class="status-label not-reproduced">
+                                    {{ item.status }}
+                                </span>
+
+                            {% elif item.status.startswith("SUSPECTED_") %}
+
+                                <span class="status-label suspected">
+                                    {{ item.status }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-label other">
+                                    {{ item.status | default("UNKNOWN", true) }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ item.test_time | default("—", true) }}
+                        </td>
+
+                        <td class="reason-cell">
+                            {{ item.reason | default("—", true) }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                class="github-link"
+                                href="https://github.com/android/architecture-samples/issues/{{ issue_number }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                查看 Issue ↗
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <strong>
+                目前沒有 GitHub Issues 測試紀錄。
+            </strong>
+
+            <p>
+                請確認檔案存在：
+                dashboard_data/merged_test_results.csv
+            </p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- 6. 原本的 Selenium 測試設定 -->
+    <!-- ============================================= -->
+
+    <form method="POST" id="test-form">
+
+        <h3 class="section-title">
+            基本測試設定
+        </h3>
+
+        <label for="source">
+            測試來源
+        </label>
+
+        <select id="source" name="source">
+
+            <option value="local"
+                {% if source == "local" %}selected{% endif %}>
+                本地 Bug Cases（B01～B30）
+            </option>
+
+            <option value="github"
+                {% if source == "github" %}selected{% endif %}>
+                GitHub Issues（請使用上方 Appium 測試）
+            </option>
+
+        </select>
+
+
+        <label for="model">
+            LLM 模型
+        </label>
+
+        <select id="model" name="model">
+
+            <option value="3b"
+                {% if model == "3b" %}selected{% endif %}>
+                qwen2.5:3b
+            </option>
+
+            <option value="7b"
+                {% if model == "7b" %}selected{% endif %}>
+                qwen2.5:7b（尚未串接）
+            </option>
+
+        </select>
+
+
+        <label for="mode">
+            測試模式
+        </label>
+
+        <select id="mode" name="mode">
+
+            <option value="normal"
+                {% if mode == "normal" %}selected{% endif %}>
+                NORMAL MODE
+            </option>
+
+            <option value="bug"
+                {% if mode == "bug" %}selected{% endif %}>
+                BUG MODE
+            </option>
+
+        </select>
+
+
+        <h3 class="section-title">
+            測試執行設定
+        </h3>
+
+        <label for="test_type">
+            執行方式
+        </label>
+
+        <select
+            id="test_type"
+            name="test_type"
+            onchange="toggleTestOptions()"
+        >
+
+            <option value="single"
+                {% if test_type == "single" %}selected{% endif %}>
+                單次測試
+            </option>
+
+            <option value="batch"
+                {% if test_type == "batch" %}selected{% endif %}>
+                批次測試
+            </option>
+
+        </select>
+
+
+        <!-- 單次測試設定 -->
+
+        <div id="single-options">
+
+            <label for="bug_id">
+                測試案例
+            </label>
+
+            <select id="bug_id" name="bug_id">
+
+                <optgroup label="本地 Bug Cases">
+
+                    {% for bug in local_bugs %}
+
+                    <option
+                        value="{{ bug.id }}"
+                        {% if bug_id == bug.id %}selected{% endif %}
+                    >
+                        {{ bug.id }} - {{ bug.title }}
+                    </option>
+
+                    {% endfor %}
+
+                </optgroup>
+
+                {% if issues %}
+
+                <optgroup label="GitHub Issues">
+
+                    {% for issue in issues %}
+
+                    <option
+                        value="{{ issue.id }}"
+                        {% if bug_id == issue.id %}selected{% endif %}
+                    >
+                        {{ issue.id }} - {{ issue.title[:55] }}
+                    </option>
+
+                    {% endfor %}
+
+                </optgroup>
+
+                {% endif %}
+
+            </select>
+
+            <div class="info">
+                單次 Selenium 測試支援 B01～B30。
+                執行前必須先產生對應的 JSON Test Plan。
+                Android GitHub Issues 請使用上方的 Appium 測試功能。
+            </div>
+
+        </div>
+
+
+        <!-- 批次測試設定 -->
+
+        <div
+            id="batch-options"
+            class="batch-options hidden"
+        >
+
+            <label for="batch_range">
+                測試範圍
+            </label>
+
+            <select
+                id="batch_range"
+                name="batch_range"
+            >
+
+                <option value="all"
+                    {% if batch_range == "all" %}selected{% endif %}>
+                    B01～B30（全部案例）
+                </option>
+
+            </select>
+
+
+            <label for="repeat_count">
+                每個案例重複次數
+            </label>
+
+            <select
+                id="repeat_count"
+                name="repeat_count"
+            >
+
+                {% for count in [1, 3, 5, 10] %}
+
+                <option
+                    value="{{ count }}"
+                    {% if repeat_count == count %}selected{% endif %}
+                >
+                    {{ count }} 次
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <p class="note">
+                批次測試支援 B01～B30。
+                每個案例可重複執行 1、3、5 或 10 次。
+            </p>
+
+            <div class="info">
+                B14、B27、B28 等案例仍可能有待修正的測試邏輯，
+                請以實際測試紀錄為準。
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            id="submit-button"
+        >
+            開始單次測試
+        </button>
+
+    </form>
+
+
+    <!-- ============================================= -->
+    <!-- 7. 執行訊息 -->
+    <!-- ============================================= -->
+
+    {% if message %}
+
+    <div class="message {{ status }}">
+        {{ message }}
+    </div>
+
+    {% endif %}
+
+
+    <!-- ============================================= -->
+    <!-- 8. Selenium 測試結果 -->
+    <!-- ============================================= -->
+
+    {% if test_result %}
+
+    <div class="result-box">
+
+        <h3>測試執行結果</h3>
+
+        {% if test_type == "single" %}
+
+        <div class="result-row">
+            <span>測試案例</span>
+            <span class="result-value">
+                {{ test_result.bug_id | default("—", true) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試模式</span>
+            <span class="result-value">
+                {{ test_result.mode | default(mode) | upper }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試結果</span>
+
+            <span class="result-value
+                {% if test_result.test_result == 'PASS' %}
+                    status-pass
+                {% elif test_result.test_result == 'BUG_REPRODUCED' %}
+                    status-bug
+                {% else %}
+                    status-error
+                {% endif %}
+            ">
+                {{ test_result.test_result | default("—", true) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>執行時間</span>
+            <span class="result-value">
+                {{ test_result.duration_seconds | default("—", true) }}
+                {% if test_result.duration_seconds is defined %}
+                    秒
+                {% endif %}
+            </span>
+        </div>
+
+        {% if test_result.run_id is defined %}
+
+        <div class="result-row">
+            <span>Run ID</span>
+            <span class="result-value">
+                {{ test_result.run_id }}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.plan_valid is defined %}
+
+        <div class="result-row">
+            <span>Test Plan 驗證</span>
+            <span class="result-value">
+                {{ "VALID" if test_result.plan_valid else "INVALID" }}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.error_message %}
+
+        <div class="result-row">
+            <span>錯誤訊息</span>
+            <span class="result-value status-error">
+                {{ test_result.error_message }}
+            </span>
+        </div>
+
+        {% endif %}
+
+
+        {% elif test_type == "batch" %}
+
+        <div class="result-row">
+            <span>批次編號</span>
+            <span class="result-value">
+                {{ test_result.batch_id | default("—", true) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>測試模式</span>
+            <span class="result-value">
+                {{ test_result.mode | default(mode) | upper }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>總測試次數</span>
+            <span class="result-value">
+                {{ test_result.total_tests | default(0) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>PASS</span>
+            <span class="result-value status-pass">
+                {{ test_result.pass_count | default(0) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>BUG_REPRODUCED</span>
+            <span class="result-value status-bug">
+                {{ test_result.bug_reproduced_count | default(0) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>FAILED / ERROR</span>
+            <span class="result-value status-error">
+                {{ test_result.failed_count | default(0) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>符合預期次數</span>
+            <span class="result-value">
+                {{ test_result.expected_count | default(0) }}
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>符合預期比例</span>
+            <span class="result-value">
+                {{ test_result.expected_rate | default(0) }}%
+            </span>
+        </div>
+
+        <div class="result-row">
+            <span>平均執行時間</span>
+            <span class="result-value">
+                {{ test_result.average_duration | default("—", true) }}
+                {% if test_result.average_duration is defined %}
+                    秒
+                {% endif %}
+            </span>
+        </div>
+
+        {% endif %}
+
+        {% if test_result.result_file is defined %}
+
+        <div class="result-row">
+            <span>CSV 檔案</span>
+            <span class="result-value">
+                {{ test_result.result_file }}
+            </span>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ============================================= -->
+    <!-- 9. 頁尾 -->
+    <!-- ============================================= -->
+
+    <p class="note">
+        本系統包含 B01～B30 本地 Bug 案例、
+        Ollama LLM Test Plan 產生流程、
+        Selenium 單次與批次測試，
+        以及 GitHub Issues / Appium 自動化測試。
+        目前 Appium 支援 GH-1046、GH-1035、GH-969
+        三個指定測試案例。
+    </p>
+
+</div>
+
+
+<!-- ============================================= -->
+<!-- 10. JavaScript -->
+<!-- ============================================= -->
+
+<script>
+
+    function toggleTestOptions() {
+
+        const testType =
+            document.getElementById("test_type").value;
+
+        const singleOptions =
+            document.getElementById("single-options");
+
+        const batchOptions =
+            document.getElementById("batch-options");
+
+        const submitButton =
+            document.getElementById("submit-button");
+
+        if (testType === "batch") {
+
+            singleOptions.classList.add("hidden");
+
+            batchOptions.classList.remove("hidden");
+
+            submitButton.textContent =
+                "開始批次測試";
+
+        } else {
+
+            singleOptions.classList.remove("hidden");
+
+            batchOptions.classList.add("hidden");
+
+            submitButton.textContent =
+                "開始單次測試";
+
+        }
+    }
+
+
+    // Selenium 測試按鈕
+
+    document.getElementById("test-form")
+        .addEventListener("submit", function () {
+
+            const submitButton =
+                document.getElementById("submit-button");
+
+            const testType =
+                document.getElementById("test_type").value;
+
+            submitButton.disabled = true;
+
+            if (testType === "batch") {
+
+                submitButton.textContent =
+                    "批次測試執行中，請稍候...";
+
+            } else {
+
+                submitButton.textContent =
+                    "單次測試執行中，請稍候...";
+
+            }
+        });
+
+
+    // Appium 測試按鈕
+
+    document.getElementById("appium-form")
+        .addEventListener("submit", function () {
+
+            const button =
+                document.getElementById("appium-submit");
+
+            button.disabled = true;
+
+            button.textContent =
+                "正在啟動 Appium 測試...";
+        });
+
+
+    toggleTestOptions();
+
+</script>
+
+</body>
+</html>

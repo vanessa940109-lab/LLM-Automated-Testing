@@ -1,0 +1,37 @@
+{
+    "bug_id": "B08",
+    "category": "todo_web",
+    "test_name": "B08_TEST",
+    "preconditions": [],
+    "steps": [
+        {
+            "action": "open",
+            "target": "/"
+        },
+        {
+            "action": "input",
+            "target": "title",
+            "locator": "id",
+            "value": "B08_TEST"
+        },
+        {
+            "action": "click",
+            "target": "add-task",
+            "locator": "id"
+        },
+        {
+            "action": "check",
+            "target": "task-checkbox",
+            "locator": "class"
+        },
+        {
+            "action": "click",
+            "target": "clear-completed",
+            "locator": "id"
+        }
+    ],
+    "expected_result": {
+        "type": "description",
+        "value": "After clicking the 'Clear Completed' button, all completed ta\ntasks should be removed from the todo list."
+    }
+}

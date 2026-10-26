@@ -1,0 +1,24 @@
+﻿# Python 虛擬環境
+.venv/
+.venv-1/
+.venv_dashboard/
+venv/
+
+# Python 暫存檔
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 敏感設定
+.env
+.env.*
+*.pem
+*.key
+*credentials*
+*secret*
+
+# 編輯器與系統暫存
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
